@@ -49,7 +49,6 @@ function gen_report() {
     printf "$FORMATS" $type $(date +%F) $(date +%T) $size $duration $tput $tput_node >> $HIBENCH_REPORT
 }
 
-
 function check_dir() {
     local dir=$1
     if [ -z "$dir" ];then
@@ -64,8 +63,19 @@ function check_dir() {
 
 function dir_size() {
     for item in $($HADOOP_EXECUTABLE fs -dus $1); do
-        if [[ $item =~ [0-9]+ ]]; then
+        if [[ $item =~ ^[0-9]+ ]]; then
             echo $item
         fi
     done
+}
+
+function setvardef() {
+    local varname=${1}
+    eval varval=\$${varname}
+    local defval=${2}
+    if [[ ! ${varval} ]]; then
+        echo ${defval}
+    else
+        echo ${varval}
+    fi
 }

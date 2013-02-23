@@ -35,4 +35,5 @@ $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR terasort -D mapred.reduce.tasks=$NUM
 
 # post-running
 END_TIME=`timestamp`
+echo "gen_report "TERASORT" ${START_TIME} ${END_TIME} ${SIZE}"
 gen_report "TERASORT" ${START_TIME} ${END_TIME} ${SIZE}

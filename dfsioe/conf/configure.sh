@@ -15,12 +15,14 @@
 # limitations under the License.
 
 # paths
-INPUT_HDFS=/benchmarks/TestDFSIO-Enh
+INPUT_HDFS=${DATA_HDFS}/benchmarks/TestDFSIO-Enh
 
 # dfsioe-read
-RD_NUM_OF_FILES=256
-RD_FILE_SIZE=200 #2000
+RD_NUM_OF_FILES=$(setvardef RD_NUM_OF_FILES 256)
+#RD_FILE_SIZE=$(setvardef RD_FILE_SIZE 2000)
+RD_FILE_SIZE=$(setvardef RD_FILE_SIZE 200) 
 
 # dfsioe-write
-WT_NUM_OF_FILES=256
-WT_FILE_SIZE=100 #1000
+WT_NUM_OF_FILES=$(setvardef WT_NUM_OF_FILES 256)
+#WT_FILE_SIZE=$(setvardef WT_FILE_SIZE 1000)
+WT_FILE_SIZE=$(setvardef WT_FILE_SIZE 100)

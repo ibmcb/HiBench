@@ -13,16 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [ -f "${HIBENCH_CONF}/funcs.sh" ]; then
+    . "${HIBENCH_CONF}/funcs.sh"
+fi
+
 # paths
 INPUT_HDFS=${DATA_HDFS}/Terasort/Input
 OUTPUT_HDFS=${DATA_HDFS}/Terasort/Output
 
 # for prepare (total) - 1T
-#DATASIZE=10000000000
-DATASIZE=100000000
-#NUM_MAPS=180
-NUM_MAPS=96
+#DATASIZE=$(setvardef DATASIZE 10000000000)
+DATASIZE=$(setvardef DATASIZE 100000000)
+
+#NUM_MAPS=$(setvardef NUM_MAPS 180)
+NUM_MAPS=$(setvardef NUM_MAPS 96)
 
 # for running (total)
-NUM_REDS=48
-
+NUM_REDS=$(setvardef NUM_REDS 48)
