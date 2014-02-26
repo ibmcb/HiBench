@@ -1,12 +1,12 @@
 #!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
+# contributor license agreements. See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
 # The ASF licenses this file to You under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
+# the License. You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,15 @@
 # limitations under the License.
 
 # paths
-INPUT_HDFS=/benchmarks/TestDFSIO-Enh
+INPUT_HDFS=${DATA_HDFS}/benchmarks/TestDFSIO-Enh
 
 # dfsioe-read
-RD_NUM_OF_FILES=256
-RD_FILE_SIZE=200 #2000
+RD_NUM_OF_FILES=$(setvardef RD_NUM_OF_FILES 256)
+#RD_FILE_SIZE=$(setvardef RD_FILE_SIZE 2000)
+RD_FILE_SIZE=$(setvardef RD_FILE_SIZE 200)
 
 # dfsioe-write
-WT_NUM_OF_FILES=256
-WT_FILE_SIZE=100 #1000
+WT_NUM_OF_FILES=$(setvardef WT_NUM_OF_FILES 256)
+#WT_FILE_SIZE=$(setvardef WT_FILE_SIZE 1000)
+WT_FILE_SIZE=$(setvardef WT_FILE_SIZE 100)
+

@@ -1,11 +1,11 @@
 # Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
+# contributor license agreements. See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
 # The ASF licenses this file to You under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
+# the License. You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,14 +24,15 @@ INPUT_HDFS=${DATA_HDFS}/Wordcount/Input
 OUTPUT_HDFS=${DATA_HDFS}/Wordcount/Output
 
 if [ $COMPRESS -eq 1 ]; then
-    INPUT_HDFS=${INPUT_HDFS}-comp
+INPUT_HDFS=${INPUT_HDFS}-comp
     OUTPUT_HDFS=${OUTPUT_HDFS}-comp
 fi
 
 # for preparation (per node) - 32G
-#DATASIZE=32000000000
-DATASIZE=3200000000
-NUM_MAPS=16
+#DATASIZE=$(setvardef DATASIZE 32000000000)
+DATASIZE=$(setvardef DATASIZE 3200000000)
+NUM_MAPS=$(setvardef NUM_MAPS 16)
 
 # for running (in total)
-NUM_REDS=48
+NUM_REDS=$(setvardef NUM_REDS 48)
+

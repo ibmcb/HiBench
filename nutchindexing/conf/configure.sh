@@ -1,12 +1,12 @@
 #!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
+# contributor license agreements. See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
 # The ASF licenses this file to You under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
+# the License. You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,9 +26,10 @@ NUTCH_BASE_HDFS=${DATA_HDFS}/Nutch
 INPUT_HDFS=${NUTCH_BASE_HDFS}/${NUTCH_INPUT}
 OUTPUT_HDFS=${NUTCH_BASE_HDFS}/${NUTCH_OUTPUT}
 
-#PAGES=10000000
-PAGES=100000
+#PAGES=$(setvardef PAGES 10000000)
+PAGES=$(setvardef PAGES 100000)
 
-NUM_MAPS=96
-NUM_REDS=48
+NUM_MAPS=$(setvardef NUM_MAPS 96)
+NUM_REDS=$(setvardef NUM_REDS 48)
+
 

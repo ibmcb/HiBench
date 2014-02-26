@@ -114,3 +114,14 @@ function check_compress() {
     fi
   fi
 }
+
+function setvardef() {
+    local varname=${1}
+    eval varval=\$${varname}
+    local defval=${2}
+    if [[ ! ${varval} ]]; then
+       echo ${defval}
+    else
+       echo ${varval}
+    fi
+}
