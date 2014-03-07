@@ -20,6 +20,39 @@ bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
 script="$(basename -- "$this")"
 this="$bin/$script"
 
+export HIBENCH_VERSION="2.2"
+
+###################### Global Paths ##################
+
+HADOOP_EXECUTABLE=$(setvardef HADOOP_EXECUTABLE ${HADOOP_HOME}/bin/hadoop)
+HADOOP_CONF_DIR=$(setvardef HADOOP_CONF_DIR ${HADOOP_HOME}/conf)
+HADOOP_EXAMPLES_JAR=$(setvardef HADOOP_EXAMPLES_JAR ${HADOOP_HOME}/hadoop-examples*.jar)
+
+if [ -n "$HADOOP_HOME" ]; then
+	HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
+	HADOOP_CONF_DIR=$HADOOP_HOME/conf
+	HADOOP_EXAMPLES_JAR=$HADOOP_HOME/hadoop-examples*.jar
+else 					
+##make some guess if none of these variables are set
+	if [ -z $HADOOP_EXECUTABLE ]; then
+		HADOOP_EXECUTABLE=`which hadoop`
+	fi
+	IFS=':'
+	for d in `$HADOOP_EXECUTABLE classpath`; do
+		if [ -z $HADOOP_CONF_DIR ] && [[ $d = */conf ]]; then
+			HADOOP_CONF_DIR=$d
+		fi
+		if [ -z $HADOOP_EXAMPLES_JAR ] && [[ $d = *hadoop-examples*.jar ]]; then
+			HADOOP_EXAMPLES_JAR=$d
+		fi
+	done
+	unset IFS
+fi
+
+echo HADOOP_EXECUTABLE=${HADOOP_EXECUTABLE:? "ERROR: Please set paths in $this before using HiBench."}
+echo HADOOP_CONF_DIR=${HADOOP_CONF_DIR:? "ERROR: Please set paths in $this before using HiBench."}
+echo HADOOP_EXAMPLES_JAR=${HADOOP_EXAMPLES_JAR:? "ERROR: Please set paths in $this before using HiBench."}
+
 if [ -z "$HIBENCH_HOME" ]; then
     export HIBENCH_HOME=`dirname "$this"`/..
 fi
@@ -32,32 +65,11 @@ if [ -f "${HIBENCH_CONF}/funcs.sh" ]; then
     . "${HIBENCH_CONF}/funcs.sh"
 fi
 
-export HIBENCH_VERSION=$(setvardef DATA_HDFS "2.2")
 
-###################### Global Paths ##################
-
-HADOOP_EXECUTABLE=$(setvardef HADOOP_EXECUTABLE ${HADOOP_HOME}/bin/hadoop)
-HADOOP_CONF_DIR=$(setvardef HADOOP_CONF_DIR ${HADOOP_HOME}/conf)
-HADOOP_EXAMPLES_JAR=$(setvardef HADOOP_EXAMPLES_JAR ${HADOOP_HOME}/hadoop-examples*.jar)
-
-if [ -z $HADOOP_EXECUTABLE ]; then
-	HADOOP_EXECUTABLE=`which hadoop`
+if [ -z "$HIVE_HOME" ]; then
+    export HIVE_HOME=${HIBENCH_HOME}/common/hive-0.9.0-bin
 fi
-IFS=':'
-for d in `$HADOOP_EXECUTABLE classpath`; do
-	if [ -z $HADOOP_CONF_DIR ] && [[ $d = */conf ]]; then
-		HADOOP_CONF_DIR=$d
-	fi
-	if [ -z $HADOOP_EXAMPLES_JAR ] && [[ $d = *hadoop-examples*.jar ]]; then
-		HADOOP_EXAMPLES_JAR=$d
-	fi
-done
-unset IFS
-#fi
 
-echo HADOOP_EXECUTABLE=${HADOOP_EXECUTABLE:? "ERROR: Please set paths in $this before using HiBench."}
-echo HADOOP_CONF_DIR=${HADOOP_CONF_DIR:? "ERROR: Please set paths in $this before using HiBench."}
-echo HADOOP_EXAMPLES_JAR=${HADOOP_EXAMPLES_JAR:? "ERROR: Please set paths in $this before using HiBench."}
 
 if $HADOOP_EXECUTABLE version|grep -i -q cdh4; then
 	HADOOP_VERSION=cdh4
@@ -65,11 +77,11 @@ else
 	HADOOP_VERSION=hadoop1
 fi
 
-export HIVE_HOME=$(setvardef HIVE_HOME ${HIBENCH_HOME}/common/hive-0.9.0-bin)
-
 export MAHOUT_HOME=$(setvardef MAHOUT_HOME ${HIBENCH_HOME}/common/mahout-distribution-0.7-$HADOOP_VERSION)
 
 export NUTCH_HOME=$(setvardef NUTCH_HOME ${HIBENCH_HOME}/nutchindexing/nutch-1.2-$HADOOP_VERSION)
+
+export HIVE_HOME=$(setvardef HIVE_HOME ${HIBENCH_HOME}/common/hive-0.9.0-bin)
 
 export DATATOOLS=$(setvardef DATATOOLS ${HIBENCH_HOME}/common/autogen/dist/datatools.jar)
 

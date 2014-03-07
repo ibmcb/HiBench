@@ -49,6 +49,7 @@ function gen_report() {
     printf "$FORMATS" $type $(date +%F) $(date +%T) $size $duration $tput $tput_node >> $HIBENCH_REPORT
 }
 
+
 function check_dir() {
     local dir=$1
     if [ -z "$dir" ];then

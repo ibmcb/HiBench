@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ -f "${HIBENCH_CONF}/funcs.sh" ]; then
-    . "${HIBENCH_CONF}/funcs.sh"
-fi
-
 # paths
 INPUT_HDFS=${DATA_HDFS}/Terasort/Input
 OUTPUT_HDFS=${DATA_HDFS}/Terasort/Output
