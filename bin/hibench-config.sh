@@ -24,14 +24,14 @@ export HIBENCH_VERSION="2.2"
 
 ###################### Global Paths ##################
 
-HADOOP_EXECUTABLE=$(setvardef HADOOP_EXECUTABLE ${HADOOP_HOME}/bin/hadoop)
-HADOOP_CONF_DIR=$(setvardef HADOOP_CONF_DIR ${HADOOP_HOME}/conf)
-HADOOP_EXAMPLES_JAR=$(setvardef HADOOP_EXAMPLES_JAR ${HADOOP_HOME}/hadoop-examples*.jar)
+HADOOP_EXECUTABLE= 
+HADOOP_CONF_DIR=
+HADOOP_EXAMPLES_JAR=
 
 if [ -n "$HADOOP_HOME" ]; then
-	HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
-	HADOOP_CONF_DIR=$HADOOP_HOME/conf
-	HADOOP_EXAMPLES_JAR=$HADOOP_HOME/hadoop-examples*.jar
+    HADOOP_EXECUTABLE=$(setvardef HADOOP_EXECUTABLE ${HADOOP_HOME}/bin/hadoop)
+    HADOOP_CONF_DIR=$(setvardef HADOOP_CONF_DIR ${HADOOP_HOME}/conf)
+    HADOOP_EXAMPLES_JAR=$(setvardef HADOOP_EXAMPLES_JAR ${HADOOP_HOME}/hadoop-examples*.jar)
 else 					
 ##make some guess if none of these variables are set
 	if [ -z $HADOOP_EXECUTABLE ]; then
@@ -67,7 +67,7 @@ fi
 
 
 if [ -z "$HIVE_HOME" ]; then
-    export HIVE_HOME=${HIBENCH_HOME}/common/hive-0.9.0-bin
+    export HIVE_HOME=$(setvardef HIVE_HOME ${HIBENCH_HOME}/common/hive-0.9.0-bin)
 fi
 
 
@@ -77,13 +77,17 @@ else
 	HADOOP_VERSION=hadoop1
 fi
 
-export MAHOUT_HOME=$(setvardef MAHOUT_HOME ${HIBENCH_HOME}/common/mahout-distribution-0.7-$HADOOP_VERSION)
+if [ -z "$MAHOUT_HOME" ]; then
+    export MAHOUT_HOME=$(setvardef MAHOUT_HOME ${HIBENCH_HOME}/common/mahout-distribution-0.7-$HADOOP_VERSION)
+fi
 
+if [ -z "$NUTCH_HOME" ]; then
 export NUTCH_HOME=$(setvardef NUTCH_HOME ${HIBENCH_HOME}/nutchindexing/nutch-1.2-$HADOOP_VERSION)
+fi
 
-export HIVE_HOME=$(setvardef HIVE_HOME ${HIBENCH_HOME}/common/hive-0.9.0-bin)
-
-export DATATOOLS=$(setvardef DATATOOLS ${HIBENCH_HOME}/common/autogen/dist/datatools.jar)
+if [ -z "$DATATOOLS" ]; then
+    export DATATOOLS=$(setvardef DATATOOLS ${HIBENCH_HOME}/common/autogen/dist/datatools.jar)
+fi
 
 if [ $# -gt 1 ]
 then
