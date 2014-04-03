@@ -20,6 +20,17 @@ bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
 script="$(basename -- "$this")"
 this="$bin/$script"
 
+function setvardef() {
+    local varname=${1}
+    eval varval=\$${varname}
+    local defval=${2}
+    if [[ ! ${varval} ]]; then
+       echo ${defval}
+    else
+       echo ${varval}
+    fi
+}
+
 export HIBENCH_VERSION=$(setvardef DATA_HDFS "2.2")
 
 ###################### Global Paths ##################
