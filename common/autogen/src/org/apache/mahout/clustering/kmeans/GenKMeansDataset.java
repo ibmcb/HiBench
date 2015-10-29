@@ -17,7 +17,7 @@
 
 package org.apache.mahout.clustering.kmeans;
 
-
+import org.apache.mahout.common.DevURandomSeedGenerator;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
@@ -48,24 +48,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.uncommons.maths.random.GaussianGenerator;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.ContinuousUniformGenerator;
 import org.uncommons.maths.random.DiscreteUniformGenerator;
 
-import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.conf.Configured;
-//import org.apache.mahout.common.AbstractJob;
+import org.apache.mahout.common.AbstractJob;
 
-public class GenKMeansDataset extends Configured implements Tool {
-//public class GenKMeansDataset extends AbstractJob {
+//public class GenKMeansDataset extends Configured implements Tool {
+public class GenKMeansDataset extends AbstractJob {
 
-  private static final Log LOG= LogFactory.getLog(GenKMeansDataset.class);
+  private static final Logger LOG= LoggerFactory.getLogger(GenKMeansDataset.class);
 
   private static long SAMPLES_PER_FILE = 20000000;
 
@@ -204,7 +202,6 @@ public class GenKMeansDataset extends Configured implements Tool {
 	public static class MapClass extends MapReduceBase implements
         Mapper<IntWritable,Text,LongWritable,VectorWritable> {
 		private int dimension = 2;
-
 		public void configure(JobConf jobConf){
 			this.dimension = Integer.parseInt(jobConf.get("genkmeansdataset.dimensions"));
 
@@ -215,7 +212,7 @@ public class GenKMeansDataset extends Configured implements Tool {
                  Reporter reporter) throws IOException {
 
             try {
-				MersenneTwisterRNG rng = new MersenneTwisterRNG();
+				MersenneTwisterRNG rng = new MersenneTwisterRNG(new DevURandomSeedGenerator());
 				//create gussian generators based on seeds 
 				GaussianGenerator [] gg = new GaussianGenerator [dimension];
 				String[] numbers = value.toString().split("\t");
@@ -236,9 +233,7 @@ public class GenKMeansDataset extends Configured implements Tool {
                 	Vector p = new RandomAccessSparseVector(dimension);
                 	p.assign(vec);
                 	output.collect(new LongWritable(count), new VectorWritable(p));
-					reporter.setStatus(Long.toString(count+1)+" samples generated");
-					reporter.incrCounter(HiBench.Counters.BYTES_DATA_GENERATED,
-							8+p.getNumNondefaultElements()*8);
+					reporter.setStatus(Long.toString(count+1)+" samples generated");		
             	}
 			} catch (Exception e) {
                 LOG.warn("Exception in GussianSampleGenerator.MapClass");
@@ -420,7 +415,7 @@ public class GenKMeansDataset extends Configured implements Tool {
 	}
 
     public int produceInitialCentroids(int numClusters, List<Vector> iCentroids) throws Exception{
-		MersenneTwisterRNG rng = new MersenneTwisterRNG();
+		MersenneTwisterRNG rng = new MersenneTwisterRNG(new DevURandomSeedGenerator());
 		int numMax = (numSamples >= Integer.MAX_VALUE)? Integer.MAX_VALUE:((int)numSamples);
 		DiscreteUniformGenerator dug = new DiscreteUniformGenerator(1,numMax,rng);
         
@@ -535,7 +530,7 @@ public class GenKMeansDataset extends Configured implements Tool {
         if(datasetFile.equals("")) {
 			LOG.info("KMeans Clustering Input Dataset : Synthetic");	
 	        GaussianSampleGenerator gsg = new GaussianSampleGenerator();
-            MersenneTwisterRNG rng = new MersenneTwisterRNG();
+            MersenneTwisterRNG rng = new MersenneTwisterRNG(new DevURandomSeedGenerator());
 	   	    ContinuousUniformGenerator ug = new ContinuousUniformGenerator(meanMin,meanMax,rng);
             ContinuousUniformGenerator ugStd = new ContinuousUniformGenerator(stdMin,stdMax,rng);
 	                
