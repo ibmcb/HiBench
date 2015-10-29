@@ -17,7 +17,7 @@
 
 package org.apache.mahout.clustering.kmeans;
 
-
+import org.apache.mahout.common.DevURandomSeedGenerator;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
@@ -212,7 +212,7 @@ public class GenKMeansDataset extends AbstractJob {
                  Reporter reporter) throws IOException {
 
             try {
-				MersenneTwisterRNG rng = new MersenneTwisterRNG();
+				MersenneTwisterRNG rng = new MersenneTwisterRNG(new DevURandomSeedGenerator());
 				//create gussian generators based on seeds 
 				GaussianGenerator [] gg = new GaussianGenerator [dimension];
 				String[] numbers = value.toString().split("\t");
@@ -415,7 +415,7 @@ public class GenKMeansDataset extends AbstractJob {
 	}
 
     public int produceInitialCentroids(int numClusters, List<Vector> iCentroids) throws Exception{
-		MersenneTwisterRNG rng = new MersenneTwisterRNG();
+		MersenneTwisterRNG rng = new MersenneTwisterRNG(new DevURandomSeedGenerator());
 		int numMax = (numSamples >= Integer.MAX_VALUE)? Integer.MAX_VALUE:((int)numSamples);
 		DiscreteUniformGenerator dug = new DiscreteUniformGenerator(1,numMax,rng);
         
@@ -530,7 +530,7 @@ public class GenKMeansDataset extends AbstractJob {
         if(datasetFile.equals("")) {
 			LOG.info("KMeans Clustering Input Dataset : Synthetic");	
 	        GaussianSampleGenerator gsg = new GaussianSampleGenerator();
-            MersenneTwisterRNG rng = new MersenneTwisterRNG();
+            MersenneTwisterRNG rng = new MersenneTwisterRNG(new DevURandomSeedGenerator());
 	   	    ContinuousUniformGenerator ug = new ContinuousUniformGenerator(meanMin,meanMax,rng);
             ContinuousUniformGenerator ugStd = new ContinuousUniformGenerator(stdMin,stdMax,rng);
 	                
